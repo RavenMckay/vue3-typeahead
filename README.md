@@ -1,6 +1,7 @@
 # Vue.js 3 typeahead component for Bootstrap 4/5
 
 Born as a fork of [vue3-simple-typeahead](https://github.com/frikinside/vue3-simple-typeahead) (thanks man 👍🏻), later rebuilt with composition API.
+and a fork of [vue3-bootstrap-typeahead](https://github.com/Devangarde/vue3-bootstrap-typeahead) (thanks you!)
 
 Tested with Bootstrap from version 4.6.1 to 5.3.0.  
 Works fine with the only Boostrap **CSS**, no Bootstrap JS library required.
@@ -19,32 +20,6 @@ This component is distributed under the [Apache License 2.0](https://www.apache.
 - Events
 - Keystrokes
 
-## Add component to your app
-
-Install the package:
-
-`npm install -D vue3-bootstrap-typeahead`
-
-Then import it in your components or views:
-
-```javascript
-import TypeAhead from "vue3-bootstrap-typeahead";
-```
-
-You can also import it globally:
-
-```javascript
-...
-import TypeAhead from "vue3-bootstrap-typeahead";
-
-let app = createApp(App);
-app.component('TypeAhead', TypeAhead);
-...
-app.mount('#app');
-```
-
-## Demo
-Please vist [demo page](https://www.devangarde.it/vue3-bootstrap-typeahead/) to see the component in action 😎
 
 ## Usage
 
