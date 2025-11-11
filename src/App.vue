@@ -8,6 +8,11 @@ const states = [ "Alabama","Alaska","Arizona","Arkansas","California","Colorado"
 const state = ref(states[0]);
 
 const color = ref(null);
+const colorDropdownItemClass = (item) => {
+	let ret = [ 'dropdown-item', 'd-flex', 'align-items-center', 'dropdown-item-color' ]
+	ret.push(`dropdown-item-${item.toLowerCase()}`)
+	return ret
+}
 
 const planets = ref([]);
 const planetItems = () => {
@@ -31,8 +36,8 @@ const spinner = ref(false);
 onMounted(() => {
 	let link = document.createElement("link");
 	link.setAttribute("rel", "stylesheet");
-	link.setAttribute("href", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css");
-	link.setAttribute("integrity", "sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH");
+	link.setAttribute("href", "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css");
+	link.setAttribute("integrity", "sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB");
 	link.setAttribute("crossorigin", "anonymous");
 	document.getElementsByTagName("head")[0].appendChild(link);
 });
@@ -68,12 +73,11 @@ onMounted(() => {
 					:allowNew="true"
 					:items="['Aqua','Black','Blue','Cyan','Fuchsia','Gray','Green','Lime','Magenta','Maroon','Navy','Olive','Orange','Purple','Red','Silver','Teal','Yellow']"
 					:minInputLength="1"
-					dropdownItemClass="dropdown-item d-flex align-items-center">
+					:dropdownItemClass="[ 'dropdown-item', 'd-flex', 'align-items-center', 'dropdown-item-color' ]"
+					:dropdownItemStyle="(color) => `--bs-dropdown-link-active-bg: ${color}`"
+				>
 					<template #item="slot">
-						<div class="me-2" :style="{
-							width: '1rem',
-							height: '1rem',
-							borderRadius: '50%',
+						<div class="me-2 dot" :style="{
 							backgroundColor: slot.item
 						}"></div>
 						<div v-html="slot.boldMatchText(slot.itemProjection(slot.item))"></div>
@@ -81,7 +85,7 @@ onMounted(() => {
 				</TypeAhead>
 			</div>
 			<div class="card-footer border-0 opacity-75 bg-white">
-				<BadgePill v-for="(text, index) in [ 'allowNew', 'items array', 'dropdownItemClass', 'minInputLength', 'slot' ]" :key="index" :text="text" />
+				<BadgePill v-for="(text, index) in [ 'allowNew', 'items array', 'dropdownItemClass', 'dropdownItemStyle', 'minInputLength', 'slot' ]" :key="index" :text="text" />
 			</div>
 		</div>
 
@@ -144,13 +148,13 @@ onMounted(() => {
 						@request:completed="spinner = false"
 						@request:canceled="spinner = false">
 						<template #item="slot">
-							<div v-html="slot.boldMatchText(slot.itemProjection(slot.item))"></div>
-							<div class="fs-small opacity-50">Region: {{ slot.item.region }}</div>
-							<div class="fs-small opacity-50">Capital city: <template v-for="(city, index) in slot.item.capital" :key="index">
+							<span class="d-block" v-html="slot.boldMatchText(slot.itemProjection(slot.item))"></span>
+							<span class="d-block fs-small opacity-50">Region: {{ slot.item.region }}</span>
+							<span class="d-block fs-small opacity-50">Capital city: <template v-for="(city, index) in slot.item.capital" :key="index">
 								<template v-if="index > 0">, </template>
 									{{ city }}
 								</template>
-							</div>
+							</span>
 						</template>
 					</TypeAhead>
 					<div
@@ -181,6 +185,15 @@ onMounted(() => {
 </template>
 
 <style>
+.dropdown-item-color .dot {
+	width: 1rem;
+	height: 1rem;
+	border-radius: 50%;
+}
+.dropdown-item-color.active .dot {
+	box-shadow: inset 0 1rem white;
+}
+
 .italy {
 	background-color: #EEEFF4;
 	width: 1.2rem;
