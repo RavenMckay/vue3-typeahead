@@ -2,7 +2,7 @@
 
 Born from forks of [vue3-simple-typeahead](https://github.com/frikinside/vue3-simple-typeahead) and [vue3-bootstrap-typeahead](https://github.com/Devangarde/vue3-bootstrap-typeahead). 
 
-Tested with Bootstrap from version 4.6.1 to 5.3.0.  
+Tested with Bootstrap from version 4.6.1 to 5.3.8.  
 Works fine with the only Boostrap **CSS**, no Bootstrap JS library required.
 
 This component is distributed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
@@ -96,7 +96,8 @@ You can use the mouse instead, simply hover you cursor over the desire element a
 | [`inputClass`](#inputClass)                       | String            | `form-control`             | `<input>` element class      |
 | [`dropdownClass`](#dropdownClass)                 | String            | `dropdown`                 | Outer element class         |
 | [`dropdownMenuClass`](#dropdownMenuClass)         | String            | `dropdown-menu`            | List class    |
-| [`dropdownItemClass`](#dropdownItemClass)         | String            | `dropdown-item`            | Item class         |
+| [`dropdownItemClass`](#dropdownItemClass)         | String, Object, Function            | `dropdown-item`            | Item class         |
+| [`dropdownItemStyle`](#dropdownItemStyle)         | String, Function            |             | Item style         |
 | [`currentSelectionClass`](#currentSelectionClass) | String            | `active`                   | In addition to `dropdownItemClass`      |
 
 ### Events
@@ -115,7 +116,7 @@ You can use the mouse instead, simply hover you cursor over the desire element a
 
 | Slot             | Props                                     | Description                                         |
 | :--------------- | :---------------------------------------- | :-------------------------------------------------- |
-| [`#item`](#item) | `item`, `itemProjection`, `boldMatchText` | Slot to customize the content of the `<li>` element |
+| [`#item`](#item) | `item`, `index`, `itemProjection`, `boldMatchText` | Slot to customize the content of the `<li>` element |
 
 #### Slot `#item` props
 

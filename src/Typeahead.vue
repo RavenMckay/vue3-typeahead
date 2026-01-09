@@ -59,8 +59,12 @@ const props = defineProps({
 		default: 'dropdown-menu'
 	},
 	dropdownItemClass: {
-		type: [ String, Object ],
+		type: [ String, Object, Function ],
 		default: 'dropdown-item'
+	},
+	dropdownItemStyle: {
+		type: [ String, Object, Function ],
+		default: ''
 	},
 	currentSelectionClass: {
 		type: [ String, Object ],
@@ -236,6 +240,25 @@ const filterItems = () => {
 		}
 	}
 };
+
+const dropdownItemClass = (item, index) => {
+	let ret = [];
+	if (typeof props.dropdownItemClass === 'string') ret = props.dropdownItemClass.split(/\s+/);
+	if (typeof props.dropdownItemClass === 'function') ret = props.dropdownItemClass(item, index);
+	if (typeof props.dropdownItemClass === 'object') ret = props.dropdownItemClass;
+	if (state.index == index) {
+		if (Array.isArray(ret)) {
+			ret = [ ...ret, props.currentSelectionClass ];
+		} else {
+			ret = { ...ret, [props.currentSelection]: true };
+		}
+	}
+	return ret
+}
+const dropdownItemStyle = (item, index) => {
+	if (typeof props.dropdownItemStyle === 'function') return props.dropdownItemStyle(item, index);
+	return props.dropdownItemStyle;
+}
 </script>
 
 <template>
@@ -265,23 +288,37 @@ const filterItems = () => {
 		</div>
 		<ul ref="menuElement" :style="menuVisible ? 'display:block' : ''" :class="props.dropdownMenuClass">
 			<template v-for="(item, index) in filteredItems" :key="index">
-				<li
-					v-if="$slots['item']"
-					:class="props.dropdownItemClass + (state.index == index ? ' ' + currentSelectionClass : '')"
-					@mousedown.prevent
-					@click="selectItem(item)"
-					@mouseenter="state.index = index">
-					<template v-if="$slots['item']">
-						<slot name="item" :item="item" :itemProjection="props.itemProjection" :boldMatchText="boldMatchText"></slot>
-					</template>
+				<li>
+					<button
+						v-if="$slots['item']"
+						type="button"
+						:class="dropdownItemClass(item, index)"
+						:style="dropdownItemStyle(item, index)"
+						@mousedown.prevent
+						@click="selectItem(item)"
+						@mouseenter="state.index = index"
+					>
+						<slot
+							name="item"
+							:item="item"
+							:index="index"
+							:itemProjection="props.itemProjection"
+							:boldMatchText="boldMatchText"
+						>
+						</slot>
+					</button>
+					<button
+						v-else
+						type="button"
+						:class="dropdownItemClass(item, index)"
+						:style="dropdownItemStyle(item, index)"
+						v-html="boldMatchText(props.itemProjection(item))"
+						@mousedown.prevent
+						@click="selectItem(item)"
+						@mouseenter="state.index = index"
+					>
+					</button>
 				</li>
-				<li
-					v-else
-					v-html="boldMatchText(props.itemProjection(item))"
-					:class="props.dropdownItemClass + (state.index == index ? ' ' + currentSelectionClass : '')"
-					@mousedown.prevent
-					@click="selectItem(item)"
-					@mouseenter="state.index = index"></li>
 			</template>
 		</ul>
 	</div>
